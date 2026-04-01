@@ -1,22 +1,24 @@
-# core.py — основна логіка обробки подій
+# core.py — основна логіка (після рефакторингу)
+
+from validator import is_valid_event
 
 events = []
 
 def process_event(event):
-    """Обробляє подію і додає до списку."""
+    """Обробляє подію після валідації."""
+    if not is_valid_event(event):
+        return None
     result = {
         "id": len(events) + 1,
-        "type": event.get("type", "unknown"),
-        "data": event.get("data", ""),
+        "type": event["type"],
+        "data": event["data"],
         "processed": True
     }
     events.append(result)
     return result
 
 def get_all_events():
-    """Повертає всі оброблені події."""
     return events
 
 def clear_events():
-    """Очищає список подій."""
     events.clear()
